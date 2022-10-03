@@ -1,4 +1,4 @@
-import React, {FC, useState, useEffect} from 'react';
+import React, {FC, useState, useEffect, useCallback} from 'react';
 import {
   ScrollView,
   Text,
@@ -6,7 +6,11 @@ import {
   StyleSheet,
   ActivityIndicator,
   NativeScrollEvent,
+  Dimensions,
+  RefreshControl,
 } from 'react-native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {RootStackParamList, Screen} from '../navigation/types';
 
 import {ProductService, Product} from '../services/ProductService';
 
@@ -14,6 +18,9 @@ import {Button} from '../components/Button';
 import {FilterIcon} from '../components/Icons';
 import {ViewMode} from '../components/ViewMode';
 import {ProductCard} from '../components/ProductCard';
+import {BottomBar} from '../components/BottomBar';
+
+type CatalogScreenProps = NativeStackScreenProps<RootStackParamList, 'Catalog'>;
 
 const isCloseToBottom = (nativeEvent: NativeScrollEvent) => {
   const paddingToBottom = 20;
@@ -23,11 +30,12 @@ const isCloseToBottom = (nativeEvent: NativeScrollEvent) => {
   );
 };
 
-const CatalogScreen: FC = () => {
+const CatalogScreen: FC<CatalogScreenProps> = ({navigation}) => {
   const [viewMode, setViewMode] = useState<'rows' | 'grid'>('grid');
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [page, setPage] = useState<number>(0);
+  const [refreshing, setRefreshing] = React.useState(false);
 
   useEffect(() => {
     async function getProducts() {
@@ -40,53 +48,83 @@ const CatalogScreen: FC = () => {
     getProducts();
   }, [page]);
 
-  return (
-    <ScrollView
-      onScroll={({nativeEvent}) => {
-        if (isCloseToBottom(nativeEvent)) {
-          setPage(page + 1);
-        }
-      }}
-      scrollEventThrottle={400}>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.title}>All Products</Text>
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    setIsLoading(true);
+    setProducts([]);
+    setPage(0);
+    const service = new ProductService();
+    const p = await service.get({offset: 0, limit: 10});
+    setProducts(p);
+    setIsLoading(false);
+    setRefreshing(false);
+  }, []);
 
-          <View style={styles.controls}>
-            <View style={styles.filterBtn}>
-              <Button icon={<FilterIcon />} theme={'light'}>
-                Filter
-              </Button>
-            </View>
-            <View style={styles.viewMode}>
-              <ViewMode value={viewMode} onPress={mode => setViewMode(mode)} />
+  const onChangeScreen = (screen: Screen) => {
+    navigation.navigate(screen);
+  };
+
+  return (
+    <View>
+      <ScrollView
+        onScroll={({nativeEvent}) => {
+          if (isCloseToBottom(nativeEvent)) {
+            setPage(page + 1);
+          }
+        }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        scrollEventThrottle={400}>
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <Text style={styles.title}>All Products</Text>
+
+            <View style={styles.controls}>
+              <View style={styles.filterBtn}>
+                <Button icon={<FilterIcon />} theme={'light'}>
+                  Filter
+                </Button>
+              </View>
+              <View style={styles.viewMode}>
+                <ViewMode
+                  value={viewMode}
+                  onPress={mode => setViewMode(mode)}
+                />
+              </View>
             </View>
           </View>
-        </View>
 
-        <View style={styles.products}>
-          {products.length
-            ? products.map((product: Product, i: number) => (
-                <View key={i} style={styles.product}>
-                  <ProductCard info={product} index={i} />
-                </View>
-              ))
-            : null}
-          {isLoading ? (
-            <View style={styles.loadingContainer}>
-              <ActivityIndicator size="small" color="#0000ff" />
-            </View>
-          ) : null}
+          <View style={styles.products}>
+            {products.length
+              ? products.map((product: Product, i: number) => (
+                  <View key={i} style={styles.product}>
+                    <ProductCard info={product} index={i} />
+                  </View>
+                ))
+              : null}
+            {isLoading ? (
+              <View style={styles.loadingContainer}>
+                <ActivityIndicator size="small" color="#0000ff" />
+              </View>
+            ) : null}
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+
+      <BottomBar
+        screen={'Catalog'}
+        onPress={(screen: Screen) => onChangeScreen(screen)}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    minHeight: Dimensions.get('window').height,
     paddingTop: 28,
-    paddingBottom: 20,
+    paddingBottom: 72,
     backgroundColor: '#FFFFFF',
   },
   header: {
