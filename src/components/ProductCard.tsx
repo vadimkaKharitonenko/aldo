@@ -20,6 +20,8 @@ const ProductCard: FC<ProductCardProps> = ({info, index}) => {
   const {title, images, price, salePrice} = info;
   const source: ImageSourcePropType | undefined = {uri: images[0]};
 
+  const hasPrice = salePrice > 0;
+
   return (
     <View style={[styles.product, index % 2 === 0 ? styles.borderRight : {}]}>
       <TouchableOpacity style={styles.favorite}>
@@ -37,10 +39,12 @@ const ProductCard: FC<ProductCardProps> = ({info, index}) => {
         <Text style={styles.brand}>Aldo</Text>
         <Text style={styles.title}>{title}</Text>
         <View style={styles.prices}>
-          {salePrice > 0 ? (
+          {hasPrice ? (
             <Text style={styles.salePrice}>AED {salePrice}</Text>
           ) : null}
-          <Text style={styles.price}>AED {price}</Text>
+          <Text style={[styles.price, hasPrice ? styles.colorRed : {}]}>
+            AED {price}
+          </Text>
         </View>
       </View>
     </View>
@@ -109,6 +113,9 @@ const styles = StyleSheet.create({
     padding: 5,
     paddingTop: 4,
     backgroundColor: '#333333',
+  },
+  colorRed: {
+    color: '#FF5A5A',
   },
   salePrice: {
     marginTop: 5,

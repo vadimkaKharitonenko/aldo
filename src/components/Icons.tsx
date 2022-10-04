@@ -278,6 +278,49 @@ const AccountIcon: FC<Icon> = ({opacity = '1'}) => {
   );
 };
 
+const CloseIcon = () => {
+  return (
+    <SvgXml
+      width={16}
+      height={16}
+      xml={`
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M16 1.6L14.4 0L8 6.4L1.6 0L0 1.6L6.4 8L0 14.4L1.6 16L8 9.6L14.4 16L16 14.4L9.6 8L16 1.6Z" fill="black"/>
+      </svg>
+      `}
+    />
+  );
+};
+
+const RadioNotSelectedIcon = () => {
+  return (
+    <SvgXml
+      width={18}
+      height={18}
+      xml={`
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M9 17.5C13.6944 17.5 17.5 13.6944 17.5 9C17.5 4.30558 13.6944 0.5 9 0.5C4.30558 0.5 0.5 4.30558 0.5 9C0.5 13.6944 4.30558 17.5 9 17.5Z" stroke="black"/>
+      </svg>
+      `}
+    />
+  );
+};
+
+const RadioSelectedIcon = () => {
+  return (
+    <SvgXml
+      width={18}
+      height={18}
+      xml={`
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M9 14C11.7614 14 14 11.7614 14 9C14 6.23858 11.7614 4 9 4C6.23858 4 4 6.23858 4 9C4 11.7614 6.23858 14 9 14Z" fill="black"/>
+      <path d="M9 17.5C13.6944 17.5 17.5 13.6944 17.5 9C17.5 4.30558 13.6944 0.5 9 0.5C4.30558 0.5 0.5 4.30558 0.5 9C0.5 13.6944 4.30558 17.5 9 17.5Z" stroke="black"/>
+      </svg>
+      `}
+    />
+  );
+};
+
 export {
   LogoIcon,
   FacebookIcon,
@@ -297,4 +340,7 @@ export {
   SearchIcon,
   FavoriteIcon,
   AccountIcon,
+  CloseIcon,
+  RadioNotSelectedIcon,
+  RadioSelectedIcon,
 };

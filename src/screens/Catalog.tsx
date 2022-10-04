@@ -19,6 +19,7 @@ import {FilterIcon} from '../components/Icons';
 import {ViewMode} from '../components/ViewMode';
 import {ProductCard} from '../components/ProductCard';
 import {BottomBar} from '../components/BottomBar';
+import {CatalogFilter} from '../components/Modals/CatalogFilter';
 
 type CatalogScreenProps = NativeStackScreenProps<RootStackParamList, 'Catalog'>;
 
@@ -35,7 +36,8 @@ const CatalogScreen: FC<CatalogScreenProps> = ({navigation}) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [page, setPage] = useState<number>(0);
-  const [refreshing, setRefreshing] = React.useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const [filtersIsVisible, setFiltersIsVisible] = useState(false);
 
   useEffect(() => {
     async function getProducts() {
@@ -66,6 +68,10 @@ const CatalogScreen: FC<CatalogScreenProps> = ({navigation}) => {
 
   return (
     <View>
+      <CatalogFilter
+        isVisible={filtersIsVisible}
+        onClose={() => setFiltersIsVisible(false)}
+      />
       <ScrollView
         onScroll={({nativeEvent}) => {
           if (isCloseToBottom(nativeEvent)) {
@@ -82,7 +88,10 @@ const CatalogScreen: FC<CatalogScreenProps> = ({navigation}) => {
 
             <View style={styles.controls}>
               <View style={styles.filterBtn}>
-                <Button icon={<FilterIcon />} theme={'light'}>
+                <Button
+                  icon={<FilterIcon />}
+                  theme={'light'}
+                  onPress={() => setFiltersIsVisible(true)}>
                   Filter
                 </Button>
               </View>
