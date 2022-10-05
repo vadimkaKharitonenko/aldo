@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {View, TouchableOpacity, StyleSheet} from 'react-native';
 
-import {FacebookIcon, TwitterIcon, GoogleIcon, AppleIcon} from './Icons';
+import {FacebookIcon, TwitterIcon, GoogleIcon, AppleIcon} from './UI/Icons';
 
 const Socials: FC = () => {
   return (

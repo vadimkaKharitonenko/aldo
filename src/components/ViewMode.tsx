@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {View, TouchableOpacity, StyleSheet} from 'react-native';
 
-import {GridIcon, RowsIcon} from './Icons';
+import {GridIcon, RowsIcon} from './UI/Icons';
 
 type ViewModeProps = {
   value: 'rows' | 'grid';

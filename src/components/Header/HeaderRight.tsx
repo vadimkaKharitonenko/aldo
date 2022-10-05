@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {View, TouchableOpacity, StyleSheet} from 'react-native';
 
-import {CartIcon} from '../Icons';
+import {CartIcon} from '../UI/Icons';
 
 type HeaderRightProps = {tintColor?: string | undefined; canGoBack: boolean};
 

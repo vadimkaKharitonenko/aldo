@@ -1,12 +1,25 @@
 import React, {FC} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
-type SizeProps = {
+type SizePickerProps = {
   sizes: number[];
   onChange: (x: number[]) => void;
+  selectedSizes: number[];
 };
 
-const Size: FC<SizeProps> = ({sizes}) => {
+const isSelected = (sizes: number[], size: number) => {
+  return sizes.includes(size);
+};
+
+const SizePicker: FC<SizePickerProps> = ({sizes, selectedSizes, onChange}) => {
+  const onCheck = (size: number) => {
+    if (isSelected(selectedSizes, size)) {
+      onChange(selectedSizes.filter(s => s !== size));
+    } else {
+      onChange([...selectedSizes, size]);
+    }
+  };
+
   return (
     <View>
       <Text style={styles.title}>Size</Text>
@@ -15,9 +28,18 @@ const Size: FC<SizeProps> = ({sizes}) => {
         {sizes.map((size: number, i: number) => (
           <TouchableOpacity
             key={i}
-            onPress={() => {}}
-            style={[styles.size, styles.sizeSelected]}>
-            <Text style={[styles.sizeText, styles.sizeTextSelected]}>
+            onPress={() => onCheck(size)}
+            style={[
+              styles.size,
+              isSelected(selectedSizes, size) ? styles.sizeSelected : null,
+            ]}>
+            <Text
+              style={[
+                styles.sizeText,
+                isSelected(selectedSizes, size)
+                  ? styles.sizeTextSelected
+                  : null,
+              ]}>
               {size}
             </Text>
           </TouchableOpacity>
@@ -67,4 +89,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export {Size};
+export {SizePicker};

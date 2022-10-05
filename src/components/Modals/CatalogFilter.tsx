@@ -1,4 +1,4 @@
-import React, {FC, useState, useCallback} from 'react';
+import React, {FC, useState} from 'react';
 import {
   Modal,
   Text,
@@ -8,10 +8,13 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import {CloseIcon} from '../Icons';
+import {CloseIcon} from '../UI/Icons';
 import {SortBy} from '../SortBy';
-import {Size} from '../Size';
-import {Separator} from '../Separator';
+import {SizePicker} from '../SizePicker';
+import {ColorPicker} from '../ColorPicker';
+import {PricePicker} from '../PricePicker';
+import {Separator} from '../UI/Separator';
+import {Button} from '../UI/Button';
 
 type CatalogFilterProps = {
   isVisible: boolean;
@@ -23,9 +26,19 @@ const CatalogFilter: FC<CatalogFilterProps> = ({
   onClose,
 }) => {
   const [sortBy, setSortBy] = useState<string>('Popularity');
-  const [sizes, setSizes] = useState<number[]>([]);
-
-  console.log(sizes);
+  const [sizes] = useState<number[]>([35, 36, 37, 38, 39, 41, 42, 43, 44, 45]);
+  const [selectedSizes, setSelectedSizes] = useState<number[]>([36, 37, 38]);
+  const [colors] = useState<string[]>([
+    '#FF5A5A',
+    '#FFFFFF',
+    '#2878D5',
+    '#000000',
+  ]);
+  const [selectedColors, setSelectedColors] = useState<string[]>([]);
+  const [productsCountForChart] = useState<number[]>([
+    0, 0, 0, 10, 25, 50, 60, 50, 25, 10, 0, 0, 0,
+  ]);
+  const [prices, setPrices] = useState<number[]>([150, 350]);
 
   return (
     <Modal animationType="slide" visible={isVisible} transparent={true}>
@@ -43,12 +56,42 @@ const CatalogFilter: FC<CatalogFilterProps> = ({
 
             <Separator />
 
-            <Size
-              onChange={s => setSizes(s)}
-              sizes={[35, 36, 37, 38, 39, 41, 42, 43, 44, 45]}
+            <SizePicker
+              onChange={s => setSelectedSizes(s)}
+              sizes={sizes}
+              selectedSizes={selectedSizes}
             />
 
             <Separator />
+
+            <ColorPicker
+              onChange={c => setSelectedColors(c)}
+              colors={colors}
+              selectedColors={selectedColors}
+            />
+
+            <Separator />
+
+            <PricePicker
+              value={prices}
+              chartData={productsCountForChart}
+              min={0}
+              max={500}
+              onChange={setPrices}
+              step={10}
+            />
+
+            <View style={styles.controls}>
+              <TouchableOpacity onPress={onClose}>
+                <Text style={styles.clearButton}>Clear All</Text>
+              </TouchableOpacity>
+
+              <View style={styles.applyButton}>
+                <Button onPress={onClose} theme={'light'}>
+                  Apply
+                </Button>
+              </View>
+            </View>
           </View>
         </View>
       </ScrollView>
@@ -93,6 +136,22 @@ const styles = StyleSheet.create({
   },
   content: {
     width: '100%',
+  },
+  controls: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 86,
+  },
+  applyButton: {
+    width: 101,
+    height: 40,
+  },
+  clearButton: {
+    fontFamily: 'Montserrat-Medium',
+    fontSize: 16,
+    color: '#333333',
   },
 });
 

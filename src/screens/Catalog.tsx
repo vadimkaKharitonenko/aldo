@@ -14,11 +14,11 @@ import {RootStackParamList, Screen} from '../navigation/types';
 
 import {ProductService, Product} from '../services/ProductService';
 
-import {Button} from '../components/Button';
-import {FilterIcon} from '../components/Icons';
+import {Button} from '../components/UI/Button';
+import {FilterIcon} from '../components/UI/Icons';
 import {ViewMode} from '../components/ViewMode';
 import {ProductCard} from '../components/ProductCard';
-import {BottomBar} from '../components/BottomBar';
+import {BottomBar} from '../components/UI/BottomBar';
 import {CatalogFilter} from '../components/Modals/CatalogFilter';
 
 type CatalogScreenProps = NativeStackScreenProps<RootStackParamList, 'Catalog'>;

@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
-import {Radio} from './Radio';
+import {Radio} from './UI/Radio';
 
 type SortByProps = {
   value: string;

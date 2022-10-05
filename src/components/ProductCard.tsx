@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 import {Product} from '../services/ProductService';
-import {StarIcon} from './Icons';
+import {StarIcon} from './UI/Icons';
 
 type ProductCardProps = {
   info: Product;
@@ -17,8 +17,10 @@ type ProductCardProps = {
 };
 
 const ProductCard: FC<ProductCardProps> = ({info, index}) => {
-  const {title, images, price, salePrice} = info;
-  const source: ImageSourcePropType | undefined = {uri: images[0]};
+  const {title, images, price, salePrice, category} = info;
+  const source: ImageSourcePropType | undefined = {
+    uri: images[0] || category.image,
+  };
 
   const hasPrice = salePrice > 0;
 

@@ -11,10 +11,10 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 import {RootStackParamList} from '../navigation/types';
 
-import {LogoIcon, UserIcon, PasswordIcon} from '../components/Icons';
-import {Field} from '../components/Field';
+import {LogoIcon, UserIcon, PasswordIcon} from '../components/UI/Icons';
+import {Field} from '../components/UI/Field';
 import {Socials} from '../components/Socials';
-import {Button} from '../components/Button';
+import {Button} from '../components/UI/Button';
 
 type LoginScreenProps = NativeStackScreenProps<RootStackParamList, 'Login'>;
 

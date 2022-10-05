@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {View, TouchableOpacity, StyleSheet} from 'react-native';
 
-import {BurgerIcon} from '../Icons';
+import {BurgerIcon} from '../UI/Icons';
 
 type HeaderLeftProps = {
   tintColor?: string | undefined;

@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {View, TouchableOpacity, StyleSheet} from 'react-native';
 
-import {Screen} from '../navigation/types';
+import {Screen} from '../../navigation/types';
 
 import {HomeIcon, SearchIcon, FavoriteIcon, AccountIcon} from './Icons';
 
@@ -15,7 +15,7 @@ const BottomBar: FC<BottomBarProps> = ({
   screen = 'Home',
 }) => {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, styles.elevation]}>
       <TouchableOpacity onPress={() => onPress('Home')}>
         <HomeIcon opacity={screen === 'Home' ? '1' : '0.36'} />
       </TouchableOpacity>
@@ -47,6 +47,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     paddingLeft: 40,
     paddingRight: 40,
+  },
+  elevation: {
+    elevation: 20,
+    shadowColor: '#52006A',
   },
 });
 
